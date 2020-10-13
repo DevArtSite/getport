@@ -1,8 +1,3 @@
-interface getPortOptions {
-	port: number | Iterable<number>,
-	hostname: string
-}
-
 const min = 1024;
 const max = 65535;
 const getAvailablePort = (options: Deno.ListenOptions): Promise<number> => new Promise((resolve, reject) => {
