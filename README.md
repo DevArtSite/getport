@@ -1,3 +1,11 @@
+<div align="center">
+  <a href="https://devartsite.com/opensource" target="_blank">
+    <img src="https://devartsite.com/assets/front/v1/img/logo-longtext.png" width="250px">
+    <br>
+    <sub><h5>Devartsite helps make open source sustainable.</h5></sub>
+  </a>
+</div>
+
 # getport [![Build Status](https://travis-ci.org/devartsite/getport.svg?branch=master)](https://travis-ci.org/devartsite/getport)
 
 > Get an available [TCP port](https://en.wikipedia.org/wiki/Port_(computer_networking))
@@ -90,14 +98,6 @@ Type: `number`
 
 Last port of the range. Must be in the range `1024`...`65535` and must be greater than `from`.
 
-## About us
-<div align="center">
-  <a href="https://devartsite.com/opensource" target="_blank">
-    <img src="https://devartsite.com/assets/front/v1/img/logo-longtext.png" width="250px">
-    <br>
-    <sub><h5>Devartsite helps make open source sustainable.</h5></sub>
-  </a>
-</div>
 <style type="text/css">
 .markdown-body a:hover, .markdown-body a:focus, .markdown-body a:active {
   text-decoration: none;
