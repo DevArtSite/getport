@@ -5,79 +5,143 @@
 ## Usage
 
 ```ts
-import { getPort } from "https://deno.land/x/getport/mod.ts";
-
-const port = await getPort({}).catch(console.error);
-
-console.log(port); //=> fall back to a random port
+import { getPort, randomPort, makeRange } from "https://deno.land/x/getport/mod.ts";
 ```
 
-Pass in a preferred port:
-
-```ts
-import { getPort } from "https://deno.land/x/getport/mod.ts";
-
-const port = await getPort({ port: 3000 }).catch(console.error);
-
-console.log(port); //=> Will use 3000 if available, otherwise fall back to a random port
+```shell
+deno run --allow-net script.ts
 ```
 
-Pass in an array of preferred ports:
+## Example
 
-```ts
-import { getPort } from "https://deno.land/x/getport/mod.ts";
+- Without params
 
-const port = await getPort({ port: [3000, 3001, 3002] }).catch(console.error);
+    ```ts
+    import { getPort } from "https://deno.land/x/getport/mod.ts";
 
-console.log(port); //=> Will use any element in the preferred ports array if available, otherwise fall back to a random port
-```
+    const port = getPort();
 
-Use the `makeRange()` helper in case you need a port in a certain range:
+    console.log(port); //=> Return first port available between 1024 and 65535
+    ```
 
-```ts
-import { getPort, makeRange } from "https://deno.land/x/getport/mod.ts";
+- Pass in a preferred port:
 
-const port = await getPort({ port: makeRange(3000, 3100) }).catch(console.error);
+    ```ts
+    import { getPort } from "https://deno.land/x/getport/mod.ts";
 
-console.log(port); //=> Will use any port from 3000 to 3100, otherwise fall back to a random port
-```
+    const port = await getPort(3000);
+
+    console.log(port); //=> Will use 3000 if available, otherwise returns the port plus one
+    ```
+
+- Pass in an array of preferred ports:
+
+    ```ts
+    import { getPort } from "https://deno.land/x/getport/mod.ts";
+
+    const port = await getPort({ port: [3000, 3001, 3002] });
+
+    console.log(port); //=> Will use once element in the preferred ports array if available, otherwise returns the last port in array plus one
+    ```
+
+- Use the `makeRange()` helper in case you need a port in a certain range:
+
+    ```ts
+    import { getPort, randomPort, makeRange } from "https://deno.land/x/getport/mod.ts";
+
+    const range = makeRange(3000, 3100);
+
+    console.log(range); //=> Return [3000, 3002, ..., 3099, 3100]
+
+    const port = await getPort(range);
+
+    console.log(port); //=> Will use first available port between 3000 and 3100
+    ```
 
 ## API
 
-### getPort(options?)
+- ### getPort
 
-Returns a `Promise` for a port number.
+  - @param port [Port](###Port)
+  - @param hostname [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+  - @return [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
 
-#### options
+    ```ts
+    /**
+     * Get all steam applications data.
+     * @param {Format?} format
+     * @return {Output}
+     */
+    const port = getPort();
+    ```
 
-Type: `object`
+- ### makeRange
 
-##### port
+  - @param from [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
+  - @param to [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
+  - @return [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
-Type: `number | Iterable<number>`
+    ```ts
+    /**
+     * Create an array of number by min and max.
+     * @param {number} from Must be between 1024 and 65535
+     * @param {number} to Must be between 1024 and 65535 and greater than from
+     * @return {number[]}
+     */
+    const port = makeRange();
+    ```
 
-A preferred port or an iterable of preferred ports to use.
+- ### randomPort
 
-##### hostname
+  - @param hostname [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+  - @return [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
 
-Type: `string`
+    ```ts
+    /**
+     * Return a random port between 1024 and 65535.
+     * @param {string?} hostname
+     * @return {number}
+     */
+    const port = randomPort();
+    ```
 
-The hostname on which port resolution should be performed. Can be either an IPv4 or IPv6 address.
+## TypeDef
 
-### makeRange(from, to)
+- ### Format
 
-Make a range of ports `from`...`to`.
+    ```ts
+    type Port = number | number[];
+    ```
 
-Returns an `Iterable` for ports in the given range.
+## Test
 
-#### from
+```shell
+Server test 0 listen on 3000
+running 8 tests
+test randomPort without params ... returned: 25645
+Is a number (true) and is includes between 1024 (true) and 65535 (true)
+ok (9ms)
+test randomPort with hostname param ... returned:  19788
+Is a number (true) and is includes between 1024 (true) and 65535 (true)
+ok (15ms)
+test getPort without params ... returned:  1025
+Is a number (true) and is includes between 1024 (true) and 65535 (true)
+ok (15ms)
+test getPort with port param ... returned:  3001
+Is a number (true) and is equal at 3001 (true) because port 3000 is used in this test.
+ok (16ms)
+test getPort with port array param ... returned:  3001
+Is a number (true) and is equal at 3001 (true) because port 3000 is used in this test.
+ok (16ms)
+test getPort with hostname param ... returned:  1025
+Is a number (true) and is includes between 1024 (true) and 65535 (true)
+ok (16ms)
+test makeRange ... returned: range  3000 3100
+Is a array (true) of number and all items in array is numbers and is includes between 1024 and 65535 (true).
+ok (16ms)
+test getPort with range port param ... returned:  3001
+Is a number (true) and is includes between 1024 (true) and 65535 (true).
+ok (15ms)
 
-Type: `number`
-
-First port of the range. Must be in the range `1024`...`65535`.
-
-#### to
-
-Type: `number`
-
-Last port of the range. Must be in the range `1024`...`65535` and must be greater than `from`.
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out (120ms)
+```

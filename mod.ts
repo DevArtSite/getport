@@ -5,6 +5,12 @@ export type checkedPort = {
 	valid: boolean;
 	port: number
 }
+
+/**
+ * Try run listener to check if port is open.
+ * @param {Deno.ListenOptions?} options
+ * @return {checkedPort}
+ */
 function checkPort(options: Deno.ListenOptions): checkedPort {
 	const { port } = options;
 	try {
@@ -17,6 +23,12 @@ function checkPort(options: Deno.ListenOptions): checkedPort {
 	}
 }
 
+/**
+ * Create an array of number by min and max.
+ * @param {number} from Must be between 1024 and 65535
+ * @param {number} to Must be between 1024 and 65535 and greater than from
+ * @return {number[]}
+ */
 function makeRange(from: number, to: number): number[] {
 	if (!(from > min || from < max)) throw new RangeError('`from` must be between 1024 and 65535');
 	if (!(to > min || to < max)) throw new RangeError('`to` must be between 1024 and 65536');
@@ -26,6 +38,11 @@ function makeRange(from: number, to: number): number[] {
 	return ports;
 }
 
+/**
+ * Return a random port between 1024 and 65535.
+ * @param {string?} hostname
+ * @return {number}
+ */
 function randomPort(hostname?: string): number {
   const port = Math.ceil(Math.random() * ((max-1) - min+1) + min+1);
   const result: checkedPort = checkPort({ hostname, port});
@@ -33,7 +50,13 @@ function randomPort(hostname?: string): number {
   else return randomPort(hostname);
 }
 
-export type Port = number | number[]
+export type Port = number | number[];
+/**
+ * Return available port.
+ * @param {Port} port
+ * @param {string?} hostname
+ * @return {number}
+ */
 function getPort (port?: Port, hostname?: string): number {
 	const listenOptions: Deno.ListenOptions = {
 		hostname: hostname || '0.0.0.0',
@@ -46,7 +69,7 @@ function getPort (port?: Port, hostname?: string): number {
 			const result: checkedPort = checkPort({...listenOptions, port});
 			if (result.valid) return result.port;
 		}
-		throw new Error(`No ports available in the range of ${ports[0]} to ${ports[ports.length-1]}.`)
+		return getPort(ports[ports.length-1]);
 	} else {
 		const result: checkedPort = checkPort(listenOptions);
 		if (!result.valid) {

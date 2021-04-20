@@ -2,7 +2,7 @@ import { assert } from "https://deno.land/std@0.74.0/testing/asserts.ts";
 import { min, max, getPort, randomPort, makeRange } from "./mod.ts";
 
 class ServerTest {
-  server: Deno.Listener<Deno.NetAddr>;
+  server: Deno.Listener;
   n: number;
   port: number;
   constructor(n: number, port: number) {
@@ -16,10 +16,6 @@ class ServerTest {
     for await (const req of this.server) {
       //...
     }
-  }
-  close() {
-    this.server.close();
-    console.log(`Server test ${this.n} on ${this.port} stopped`);
   }
 }
 
