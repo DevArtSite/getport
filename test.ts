@@ -29,7 +29,14 @@ Deno.test("randomPort without params", () => {
 });
 
 Deno.test("randomPort with hostname param", () => {
-  const port =  randomPort("localhost");
+  const port =  randomPort([], "localhost");
+  console.log("returned: ", port);
+  console.log(`Is a number (${(typeof port === "number")}) and is includes between ${min} (${(port > min)}) and ${max} (${(port < max)})`);
+  assert(typeof port === "number" && port > min && port < max);
+});
+
+Deno.test("randomPort with range param", () => {
+  const port =  randomPort(makeRange(3000, 3010));
   console.log("returned: ", port);
   console.log(`Is a number (${(typeof port === "number")}) and is includes between ${min} (${(port > min)}) and ${max} (${(port < max)})`);
   assert(typeof port === "number" && port > min && port < max);

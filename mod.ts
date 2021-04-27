@@ -39,15 +39,18 @@ function makeRange(from: number, to: number): number[] {
 }
 
 /**
- * Return a random port between 1024 and 65535.
+ * Returns a random port within your range or between 1024 and 65535.
+ * @param {number[]?} range
  * @param {string?} hostname
  * @return {number}
  */
-function randomPort(hostname?: string): number {
-  const port = Math.ceil(Math.random() * ((max-1) - min+1) + min+1);
+function randomPort(range?: number[], hostname?: string): number {
+  const port = (!range || range.length === 0)
+		?	Math.ceil(Math.random() * ((max-1) - min+1) + min+1)
+		: range[Math.floor(Math.random() * range.length)];
   const result: checkedPort = checkPort({ hostname, port});
   if (result.valid) return result.port;
-  else return randomPort(hostname);
+  else return randomPort(range, hostname);
 }
 
 export type Port = number | number[];

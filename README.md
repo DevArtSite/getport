@@ -88,7 +88,7 @@ deno run --allow-net script.ts
      * @param {number} to Must be between 1024 and 65535 and greater than from
      * @return {number[]}
      */
-    const port = makeRange();
+    const port = makeRange(3000, 3010);
     ```
 
 - ### randomPort
@@ -98,11 +98,27 @@ deno run --allow-net script.ts
 
     ```ts
     /**
-     * Return a random port between 1024 and 65535.
+     * Returns a random port within your range or between 1024 and 65535.
+     * @param {number[]?} range
      * @param {string?} hostname
      * @return {number}
      */
+    ```
+
+    ```ts
     const port = randomPort();
+    ```
+
+    ```ts
+    const port = randomPort([], "127.0.0.1");
+    ```
+
+    ```ts
+    const port = randomPort([3000, 3001, 3002, 3003, 3004, 3005], "127.0.0.1");
+    ```
+
+    ```ts
+    const port = randomPort(makeRange(3000, 3005), "127.0.0.1");
     ```
 
 ## TypeDef
