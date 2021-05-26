@@ -12,6 +12,6 @@ if [[ $1 ]]; then
   a="v$v"
   git add .
   git commit -m "$m"
-  #git tag -a "$a" -m "Version $v"
-  git push origin "$a" --force
+  git tag -a "$a" -m "Version $v"
+  git push origin "$a"
 fi
