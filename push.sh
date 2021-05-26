@@ -4,7 +4,7 @@ m="minor update"
 # global push in main
 git add .
 git commit -m "$m"
-git push origin master
+git push origin master --force
 
 # create new tag if an argument is set
 if [[ $1 ]]; then
