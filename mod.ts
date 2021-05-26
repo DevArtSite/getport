@@ -50,14 +50,13 @@ function randomPort(hostname?: string): number {
   else return randomPort(hostname);
 }
 
-export type Port = number | number[];
 /**
  * Return available port.
- * @param {Port} port
+ * @param {number | number[]} port
  * @param {string?} hostname
  * @return {number}
  */
-function getPort (port?: Port, hostname?: string): number {
+ export default function getPort (port?: number | number[], hostname?: string): number {
 	const listenOptions: Deno.ListenOptions = {
 		hostname: hostname || '0.0.0.0',
 		port: (port && !Array.isArray(port)) ? port : 0
@@ -80,4 +79,3 @@ function getPort (port?: Port, hostname?: string): number {
 }
 
 export { min, max, getPort, randomPort, makeRange }
-export default getPort
