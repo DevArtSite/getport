@@ -2,7 +2,6 @@
 
 > Get an available [TCP port](https://en.wikipedia.org/wiki/Port_(computer_networking))
 
-
 ## Usage
 
 ```ts
