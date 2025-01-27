@@ -1,3 +1,4 @@
+# DEPRECATED use [@std/net] (https://jsr.io/@std/net) 
 # getport [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/getport/mod.ts)
 
 > Get an available [TCP port](https://en.wikipedia.org/wiki/Port_(computer_networking))
